@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(javac:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd Stream API examples and project documentation\n\n- Implement 5 Stream API examples demonstrating filter, map, forEach, count, and sum operations\n- Add CLAUDE.md with project overview and development instructions\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}
