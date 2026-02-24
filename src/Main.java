@@ -1,7 +1,8 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -440,6 +441,8 @@ public class Main {
         int [] arr = {1,2,3,4,5};
          Arrays.stream(arr)
                  .forEach(System.out::println);
+        System.out.println("---------------------------");
+
     }
 
     public static void removeNegativeNumbers() {
@@ -450,96 +453,259 @@ public class Main {
         Arrays.stream(arrayOne)
                 .filter(n -> n > 0)
                 .forEach(System.out::println);
+        System.out.println("---------------------------");
+
     }
 
     public static void doubleAverage() {
         System.out.println("---------------------------");
         System.out.println("13. Compute the average of a `double` array.");
+         double [] dobArray = {10,20,30,400,1000};
+       OptionalDouble result = Arrays.stream(dobArray)
+                .average();
+       System.out.print(result);
+       System.out.println("---------------------------");
+
     }
 
     public static void sumOfIntArray() {
         System.out.println("---------------------------");
         System.out.println("14. Find the sum of an `int` array using Streams.");
+        int [] intArray = {1,2,3,4,5,6};
+       OptionalInt result = Arrays.stream(intArray)
+                .reduce(Integer::sum);
+        if (result.isPresent()) {
+            System.out.println(result.getAsInt());
+        } else {
+            System.out.println("Result not present");
+        }
+        System.out.println("---------------------------");
     }
 
     public static void countElementsGreaterThanTen() {
         System.out.println("---------------------------");
         System.out.println("15. Count elements greater than 10 in an `int` array.");
+        int [] intArray = {11,2,3,4,52,46};
+        long count = Arrays.stream(intArray)
+                .filter(n -> n > 10)
+                .count();
+        System.out.println(count);
+        System.out.println("---------------------------");
     }
 
     public static void convertStringArrayToList() {
         System.out.println("---------------------------");
         System.out.println("16. Convert a `String` array to a `List` using Streams.");
+        String [] newString = {"Sohail", "Ramdhas", "Micheal", "Prabhakar", "Manoj", "Senthil"};
+
+        List<String> friendsList = Arrays.stream(newString)
+                .toList();
+        System.out.println(friendsList);
+        System.out.println("---------------------------");
+        // important info : to modify list use .collect(collector.toList())
     }
 
     public static void findStringsStartingWithA() {
         System.out.println("---------------------------");
         System.out.println("17. Find all strings that start with \"A\" in a `String` array.");
+        String [] newString = {"Amritsar", "All", "Made", "Pass", "Madness", "Aura"};
+        Arrays.stream(newString)
+                .filter(n -> n.startsWith("A"))
+        .forEach(System.out::println);
     }
 
     public static void sortIntArrayAscending() {
         System.out.println("---------------------------");
         System.out.println("18. Sort an `int` array in ascending order using Streams.");
+        int [] intArr = {9,7,4,1,4,5};
+        Arrays.stream(intArr)
+                .sorted()
+                .forEach(System.out::println);
     }
 
     public static void sortDoubleArrayDescending() {
         System.out.println("---------------------------");
         System.out.println("19. Sort a `double` array in descending order using Streams.");
+        double [] doubleArr = {9,7,4,1,4,5};
+        Arrays.stream(doubleArr)
+                .boxed()
+                .sorted(Comparator.reverseOrder())
+                .forEach(System.out::println);
+        System.out.println("---------------------------");
     }
 
     public static void checkAllElementsPositive() {
         System.out.println("---------------------------");
         System.out.println("20. Check if all elements in an `int` array are positive.");
+        int [] intArr = {9,7,4,1,4,5};
+        boolean result = Arrays.stream(intArr)
+                .allMatch(n-> n>0);
+        System.out.println(result);
+        System.out.println("---------------------------");
     }
 
     public static void countVowelsInString() {
         System.out.println("---------------------------");
         System.out.println("21. Count vowels in a string using Streams.");
+        String name = "SohailUrRahman";
+        //{a,e,i,o,u}
+        long count = name.chars()
+                .mapToObj(c -> (char) c)
+                .filter(n -> "aeiouAEIOU".indexOf(n) != -1)
+                .count();
+        System.out.println(count);
+        System.out.println("---------------------------");
     }
 
     public static void findFirstRepeatedCharacter() {
         System.out.println("---------------------------");
         System.out.println("22. Find the first repeated character in a string.");
+
+        String someString = "There is one beautiful butterfly";
+        Set<Character> seen = new HashSet<>();
+
+        Optional<Character> firstRepeated =  someString.chars()
+                .mapToObj(c -> (char) c )
+                .filter(c -> !seen.add(c))
+                .findFirst();
+        if (firstRepeated.isPresent()) {
+            System.out.println("First repeated character: " + firstRepeated.get());
+        } else {
+            System.out.println("No repeated characters found.");
+        }
+        System.out.println("---------------------------");
+
     }
 
     public static void findFirstNonRepeatedCharacter() {
         System.out.println("---------------------------");
-        System.out.println("23. Find the first non-repeated character in a string.");
+        System.out.println("Find the first non-repeated character in a string.");
+        String str = "There is one beautiful butterfly";
+        Map<Character, Long> frequencyMap = str.chars()                      // IntStream
+                .mapToObj(c -> (char)c)         // Stream<Character>
+                .collect(Collectors.groupingBy( // group by character
+                        Function.identity(),
+                        LinkedHashMap::new,       // keep insertion order
+                        Collectors.counting()     // count occurrences
+                ));
+
+        Optional<Character> firstNonRepeated = frequencyMap.entrySet().stream()
+                .filter(entry -> entry.getValue() == 1) // only count 1
+                .map(Map.Entry::getKey)
+                .findFirst();
+
+        if (firstNonRepeated.isPresent()) {
+            System.out.println("First non-repeated character: " + firstNonRepeated.get());
+        } else {
+            System.out.println("No non-repeated characters found.");
+        }
+
+        System.out.println("---------------------------");
     }
 
     public static void convertStringToCharList() {
         System.out.println("---------------------------");
         System.out.println("24. Convert a string to a `List<Character>`.");
+
+        String str = "Lorem ipsum dolor";
+
+        List<Character> result = str.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.toList());
+        System.out.println(result);
+        System.out.println("---------------------------");
     }
 
     public static void countCharacterFrequency() {
         System.out.println("---------------------------");
         System.out.println("25. Count the frequency of each character in a string.");
+        String str = "SohailUrRahmanShaik";
+
+        Map<Character, Long> result =
+                str.chars()
+                        .mapToObj(c -> (char) c)
+                        .collect(Collectors.groupingBy(
+                                n -> n,
+                                Collectors.counting()
+                        ));
+
+        System.out.println(result.get('a'));
+
     }
 
     public static void reverseStringUsingStreams() {
-        System.out.println("---------------------------");
+        System.out.println("-------------NU--------------");
         System.out.println("26. Reverse a string using Streams.");
+        String str = "SohailUrRahmanShaik";
+
+        String reversed =
+                IntStream.range(0, str.length())
+                        .mapToObj(i -> str.charAt(str.length() - 1 - i))
+                        .map(String::valueOf)
+                        .collect(Collectors.joining());
+
+        System.out.println(reversed);
+        System.out.println("-------------NU-------------");
+
     }
 
     public static void checkAllCharactersAreDigits() {
         System.out.println("---------------------------");
         System.out.println("27. Check if all characters in a string are digits.");
+        String dig = "123456";
+        boolean isDigit = dig.chars()
+                .allMatch(Character::isDigit);
+        System.out.println(isDigit);
     }
 
     public static void convertWordsToUppercase() {
         System.out.println("---------------------------");
         System.out.println("28. Convert all words in a sentence to uppercase.");
+
+            String sentence = "java streams are powerful";
+
+            String result = Arrays.stream(sentence.split(" "))
+                    .map(String::toUpperCase)
+                    .collect(Collectors.joining(" "));
+
+            System.out.println(result);
+
     }
 
     public static void removeDuplicateCharacters() {
         System.out.println("---------------------------");
         System.out.println("29. Remove duplicate characters from a string.");
+        String allChar = "ThereWere some cat in";
+        Set<String> someSet = new HashSet<>();
+        allChar.chars()
+                .mapToObj(c -> (char) c)
+                .filter(c -> someSet.add(String.valueOf(c)))
+                .forEach(System.out::println);
+
+// Another solution below :: IMPORTANT
+//        String result = allChar.chars()
+//                .distinct()
+//                .mapToObj(c -> String.valueOf((char) c))
+//                .collect(Collectors.joining());
+
     }
 
     public static void countWordsStartingWithVowel() {
         System.out.println("---------------------------");
         System.out.println("30. Count words that start with a vowel in a sentence.");
+
+        String sentence = "An elephant is under a umbrella";
+
+            long count = Arrays.stream(sentence.split("\\s+"))
+                    .filter(word -> !word.isEmpty())
+                    .filter(word ->
+                            "aeiouAEIOU".indexOf(word.charAt(0)) != -1)
+                    .count();
+
+            System.out.println(count);
+
+
+
     }
 
     public static void convertMapKeysToList() {
