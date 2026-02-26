@@ -887,46 +887,86 @@ public class Main {
     public static void findTop3HighestNumbers() {
         System.out.println("---------------------------");
         System.out.println("42. Find the top 3 highest numbers in a `List`.");
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        numbers.stream()
+                .sorted(Comparator.reverseOrder())
+                .limit(3)
+                .forEach(System.out::println);
     }
 
     public static void findTop3LongestStrings() {
         System.out.println("---------------------------");
         System.out.println("43. Find the top 3 longest strings in a `List`.");
+        List<String> strings = List.of("apple", "banana", "cat", "dog", "elephant", "fish");
+        strings.stream()
+                .sorted(Comparator.comparingInt(String::length).reversed())
+                .limit(3)
+                .forEach(System.out::println);
     }
 
     public static void skipFirst5Elements() {
         System.out.println("---------------------------");
         System.out.println("44. Skip the first 5 elements in a Stream.");
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        numbers.stream()
+                .skip(5)
+                .forEach(System.out::println);
     }
 
     public static void limitToFirst10Elements() {
         System.out.println("---------------------------");
         System.out.println("45. Limit a Stream to the first 10 elements.");
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        numbers.stream()
+                .limit(10)
+                .forEach(System.out::println);
     }
 
     public static void findSecondHighestNumber() {
         System.out.println("---------------------------");
         System.out.println("46. Find the second highest number in a `List`.");
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        numbers.stream()
+                .sorted(Comparator.reverseOrder())
+                .skip(1)
+                .findFirst()
+                .ifPresent(System.out::println);
     }
 
     public static void checkAnyElementMatches() {
         System.out.println("---------------------------");
         System.out.println("47. Check if any element matches a condition.");
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        boolean result = numbers.stream()
+                .anyMatch(n -> n > 5);
+        System.out.println(result);
     }
 
     public static void checkAllElementsSatisfy() {
         System.out.println("---------------------------");
         System.out.println("48. Check if all elements satisfy a condition.");
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        boolean result = numbers.stream()
+                .allMatch(n -> n > 0);
+        System.out.println(result);
     }
 
     public static void checkNoElementSatisfies() {
         System.out.println("---------------------------");
         System.out.println("49. Check if no element satisfies a condition.");
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        boolean result = numbers.stream()
+                .noneMatch(n -> n > 10);
+        System.out.println(result);
     }
 
     public static void usePeekForDebugging() {
         System.out.println("---------------------------");
         System.out.println("50. Use `peek()` to debug intermediate Stream values.");
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        numbers.stream()
+                .peek(System.out::println)
+                .forEach(System.out::println);
     }
 
     public static void findFirstElement() {
