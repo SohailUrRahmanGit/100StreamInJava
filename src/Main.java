@@ -972,6 +972,11 @@ public class Main {
     public static void findFirstElement() {
         System.out.println("---------------------------");
         System.out.println("51. Find first element in a `List` using `findFirst()`.");
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+       List<Integer> someValue = numbers.stream()
+                .findFirst()
+                .stream().toList();
+        System.out.println(someValue);
     }
 
     public static void findAnyElement() {
