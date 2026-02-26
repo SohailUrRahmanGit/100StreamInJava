@@ -992,11 +992,30 @@ public class Main {
     public static void findMaxElementWithOptional() {
         System.out.println("---------------------------");
         System.out.println("53. Find the maximum element safely using `Optional`.");
+        List<Integer> numbers = List.of(10, 45, 2, 99, 23);
+
+        Optional<Integer> max = numbers.stream()
+                .max(Integer::compareTo);
+
+        max.ifPresent(value ->
+                System.out.println("Maximum value: " + value)
+        );
+
     }
 
     public static void findMinElementWithOptional() {
         System.out.println("---------------------------");
         System.out.println("54. Find the minimum element safely using `Optional`.");
+        List<Integer> numbers = List.of(10, 45, 2, 99, 23);
+
+        Optional<Integer> max = numbers.stream()
+                .max(Integer::compareTo);
+
+        // Safe handling
+        max.ifPresent(value ->
+                System.out.println("Maximum value: " + value)
+        );
+
     }
 
     public static void findFirstStringStartingWithJ() {
