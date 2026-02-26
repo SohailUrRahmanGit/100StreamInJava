@@ -4,6 +4,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.*;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
@@ -611,7 +613,7 @@ public class Main {
 
         List<Character> result = str.chars()
                 .mapToObj(c -> (char) c)
-                .collect(Collectors.toList());
+                .collect(toList());
         System.out.println(result);
         System.out.println("---------------------------");
     }
@@ -620,7 +622,6 @@ public class Main {
         System.out.println("---------------------------");
         System.out.println("25. Count the frequency of each character in a string.");
         String str = "SohailUrRahmanShaik";
-
         Map<Character, Long> result =
                 str.chars()
                         .mapToObj(c -> (char) c)
@@ -653,9 +654,9 @@ public class Main {
         System.out.println("---------------------------");
         System.out.println("27. Check if all characters in a string are digits.");
         String dig = "123456";
-        boolean isDigit = dig.chars()
+        boolean isaNumberDigit = dig.chars()
                 .allMatch(Character::isDigit);
-        System.out.println(isDigit);
+        System.out.println(isaNumberDigit);
     }
 
     public static void convertWordsToUppercase() {
@@ -711,56 +712,176 @@ public class Main {
     public static void convertMapKeysToList() {
         System.out.println("---------------------------");
         System.out.println("31. Convert a `Map`'s keys to a `List` using Streams.");
+        Map<String, Integer> aMap = Map.of(
+                "Alice", 85,
+                "Bob", 92,
+                "Charlie", 78,
+                "Diana", 95
+        );
+
+       List<String> keyStrings =  aMap.keySet().stream()
+               .toList();
+        System.out.println(keyStrings);
+        System.out.println("---------------------------");
+
     }
 
     public static void convertMapValuesToList() {
         System.out.println("---------------------------");
         System.out.println("32. Convert a `Map`'s values to a `List`.");
+
+        Map<String, Integer> someMap = Map.of(
+          "sohail",36,
+          "ramdhas",35,
+          "pawan", 37
+        );
+
+       List<Integer> allValues =  someMap.values().stream()
+                .toList();
+        System.out.println(allValues);
+        System.out.println("---------------------------");
+
     }
 
     public static void filterEntriesGreaterThan100() {
         System.out.println("---------------------------");
         System.out.println("33. Filter entries with values > 100.");
+        Map<String, Integer> map = Map.of(
+                "Apple", 150,
+                "Banana", 80,
+                "Orange", 200,
+                "Grapes", 50
+        );
+        map.values().stream()
+                .filter(n -> n > 100)
+                .forEach(System.out::println);
+
     }
 
     public static void findEntryWithMaxValue() {
         System.out.println("---------------------------");
         System.out.println("34. Find the entry with the maximum value.");
+
+        Map<String, Integer> map = Map.of(
+                "Apple", 150,
+                "Banana", 80,
+                "Orange", 200,
+                "Grapes", 50
+        );
+        Optional<Map.Entry<String, Integer>> maxEntry =  map.entrySet().stream()
+                .max(Map.Entry.comparingByValue());
+
+        System.out.println(maxEntry);
     }
 
     public static void findEntryWithMinValue() {
         System.out.println("---------------------------");
         System.out.println("35. Find the entry with the minimum value.");
+        Map<String, Integer> map = Map.of(
+                "Apple", 150,
+                "Banana", 80,
+                "Orange", 200,
+                "Grapes", 50
+        );
+        Optional<Map.Entry<String, Integer>> maxEntry =  map.entrySet().stream()
+                .min(Map.Entry.comparingByValue());
+
+        System.out.println(maxEntry);
     }
 
     public static void sumAllMapValues() {
         System.out.println("---------------------------");
         System.out.println("36. Sum all values in a `Map`.");
+        Map<String, Integer> map = Map.of(
+                "Apple", 150,
+                "Banana", 80,
+                "Orange", 200,
+                "Grapes", 50
+        );
+        Integer result =  map.values()
+                .stream().reduce(Integer::sum)
+                        .orElse(0);
+        System.out.println(result);
+        System.out.println("---------------------------");
+
     }
 
     public static void convertMapToKeyValueList() {
         System.out.println("---------------------------");
         System.out.println("37. Convert a `Map` to a `List<String>` like \"key=value\".");
+        Map<String, Integer> map = Map.of(
+                "Apple", 150,
+                "Banana", 80,
+                "Orange", 200,
+                "Grapes", 50
+        );
+
+        List<String> result = map.entrySet().stream()
+                .map(n -> n.getKey() + "=" + n.getValue())
+                .toList();
+
+        System.out.println(result);
+
     }
 
     public static void groupObjectsByField() {
         System.out.println("---------------------------");
         System.out.println("38. Group a list of objects by a field into a `Map`.");
+
+        List<Employee> e = List.of(new Employee("Alice", "HR"),
+                new Employee("Bob", "IT"),
+                new Employee("Charlie", "HR"));
+
+
+        Map<String, List<Employee>> someList = e.stream()
+               .collect(Collectors.groupingBy(Employee::getDepartment));
+
+        System.out.println(someList);
     }
 
     public static void countWordOccurrences() {
         System.out.println("---------------------------");
         System.out.println("39. Count occurrences of words in a `List` using a `Map`.");
+        List<String> words = List.of(
+                "apple", "banana", "apple", "orange",
+                "banana", "apple", "grape", "orange"
+        );
+
+        Map<String,Long> result =  words.stream()
+                .collect(Collectors.groupingBy(Function.identity(), counting()));
+
+        System.out.println(result);
     }
 
     public static void partitionMapByCondition() {
         System.out.println("---------------------------");
         System.out.println("40. Partition a `Map` into two groups based on a value condition.");
+        Map<String, Integer> marks = Map.of(
+                "Sohail", 50,
+                "Ramdas", 100,
+                "Manoj", 49,
+                "Sentil", 4
+        );
+
+        Map<Boolean, List<Map.Entry<String, Integer>>> result = marks.entrySet().stream()
+                .collect(Collectors.groupingBy(n-> n.getValue() >= 50));
+
+        System.out.println(result);
+
     }
 
     public static void flattenListOfLists() {
         System.out.println("---------------------------");
         System.out.println("41. Flatten a `List<List<T>>` using `flatMap()`.");
+        List<List<String>> nestedWords = List.of(
+                List.of("apple", "banana"),
+                List.of("cat", "dog", "elephant"),
+                List.of("fish")
+        );
+        List<String> someString = nestedWords.stream()
+                .flatMap(Collection::stream)
+                .toList();
+        System.out.println(someString);
     }
 
     public static void findTop3HighestNumbers() {
