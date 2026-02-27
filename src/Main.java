@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -1021,58 +1022,139 @@ public class Main {
     public static void findFirstStringStartingWithJ() {
         System.out.println("---------------------------");
         System.out.println("55. Get the first string starting with \"J\" or return \"N/A\".");
+        List<String> names = Arrays.asList("Amit", "John", "Rahul", "Jack");
+
+        String firstString = String.valueOf(names.stream()
+                .filter(n -> n.startsWith("J"))
+                .toList().stream().findFirst());
+        System.out.println(firstString);
+
     }
 
     public static void countElementsGreaterThan50() {
         System.out.println("---------------------------");
         System.out.println("56. Count elements greater than 50 and return `Optional`.");
+        List<Integer> names = Arrays.asList(20,30,50,52,55,60,12,80,100);
+        long countOfNumbers =  names.stream()
+                .filter(n -> n > 50)
+                .count();
+        System.out.println(countOfNumbers);
     }
 
     public static void findFirstNumberDivisibleBy7() {
         System.out.println("---------------------------");
         System.out.println("57. Find the first number divisible by 7.");
+        List<Integer> names = Arrays.asList(20,30,50,52,55,60,12,21,80,100,28);
+        Optional<Integer> firstNumberDivBy7 =  names.stream()
+                .filter(n -> n % 7 == 0)
+                .findFirst();
+        System.out.println(firstNumberDivBy7);
     }
-
+    
     public static void findFirstStringContainingAbc() {
         System.out.println("---------------------------");
         System.out.println("58. Find first string containing \"abc\" using `Optional`.");
+
+        List<String> words = List.of("hello", "abcdef", "world", "abcxyz", "java");
+
+        Optional<String> result = words.stream()
+                .filter(s -> s.contains("abc"))
+                .findFirst();
+
+        result.ifPresentOrElse(
+                s -> System.out.println("First string containing 'abc': " + s),
+                () -> System.out.println("No string containing 'abc' found.")
+        );
     }
 
     public static void findLongestStringWithOptional() {
         System.out.println("---------------------------");
         System.out.println("59. Find the longest string using `Optional`.");
+
+        List<String> words = List.of("apple", "banana", "strawberry", "kiwi");
+
+        Optional<String> longest = words.stream()
+                .reduce((s1, s2) -> s1.length() >= s2.length() ? s1 : s2);
+
+        longest.ifPresentOrElse(
+                s -> System.out.println("Longest string: " + s),
+                () -> System.out.println("List is empty.")
+        );
     }
 
     public static void handleOptionalWithOrElse() {
         System.out.println("---------------------------");
         System.out.println("60. Handle `Optional` value using `orElse()` and `orElseGet()`.");
+
+        Optional<String> presentOptional = Optional.of("Hello, World!");
+        Optional<String> emptyOptional = Optional.empty();
+
+        // orElse() - returns default value directly (always evaluated)
+        System.out.println("orElse (present): " + presentOptional.orElse("Default Value"));
+        System.out.println("orElse (empty):   " + emptyOptional.orElse("Default Value"));
+
+        // orElseGet() - returns value from supplier (lazily evaluated)
+        System.out.println("orElseGet (present): " + presentOptional.orElseGet(() -> "Computed Default"));
+        System.out.println("orElseGet (empty):   " + emptyOptional.orElseGet(() -> "Computed Default"));
     }
 
     public static void sumIntStream() {
         System.out.println("---------------------------");
         System.out.println("61. Sum all numbers in an `IntStream`.");
+
+        int sum = IntStream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).sum();
+        System.out.println("Sum: " + sum);
+
+        // Alternative using range
+        int rangeSum = IntStream.rangeClosed(1, 10).sum();
+        System.out.println("Range Sum (1-10): " + rangeSum);
     }
 
     public static void computeIntStreamAverage() {
         System.out.println("---------------------------");
         System.out.println("62. Compute average of an `IntStream`.");
+
+        OptionalDouble average = IntStream.of(10, 20, 30, 40, 50).average();
+
+        average.ifPresentOrElse(
+                avg -> System.out.println("Average: " + avg),
+                () -> System.out.println("Stream is empty.")
+        );
     }
 
     public static void findMaxInDoubleStream() {
         System.out.println("---------------------------");
         System.out.println("63. Find max in a `DoubleStream`.");
+
+        OptionalDouble max = DoubleStream.of(3.5, 1.2, 7.8, 4.4, 9.1, 2.3).max();
+
+        max.ifPresentOrElse(
+                m -> System.out.println("Max: " + m),
+                () -> System.out.println("Stream is empty.")
+        );
     }
 
     public static void filterEvenNumbersInIntStream() {
         System.out.println("---------------------------");
         System.out.println("64. Filter all even numbers in an `IntStream`.");
+
+        System.out.print("Even numbers: ");
+        IntStream.rangeClosed(1, 20)
+                .filter(n -> n % 2 == 0)
+                .forEach(n -> System.out.print(n + " "));
+        System.out.println();
     }
 
     public static void convertIntStreamToList() {
         System.out.println("---------------------------");
         System.out.println("65. Convert `IntStream` to `List<Integer>`.");
-    }
 
+        List<Integer> list = IntStream.rangeClosed(1, 10)
+                .boxed()
+                .collect(Collectors.toList());
+
+        System.out.println("List<Integer>: " + list);
+    }
     public static void generateFirst10NaturalNumbers() {
         System.out.println("---------------------------");
         System.out.println("66. Generate first 10 natural numbers using `IntStream.range()`.");
