@@ -1016,7 +1016,6 @@ public class Main {
         max.ifPresent(value ->
                 System.out.println("Maximum value: " + value)
         );
-
     }
 
     public static void findFirstStringStartingWithJ() {
@@ -1028,7 +1027,6 @@ public class Main {
                 .filter(n -> n.startsWith("J"))
                 .toList().stream().findFirst());
         System.out.println(firstString);
-
     }
 
     public static void countElementsGreaterThan50() {
@@ -1050,7 +1048,7 @@ public class Main {
                 .findFirst();
         System.out.println(firstNumberDivBy7);
     }
-    
+
     public static void findFirstStringContainingAbc() {
         System.out.println("---------------------------");
         System.out.println("58. Find first string containing \"abc\" using `Optional`.");
@@ -1066,13 +1064,15 @@ public class Main {
                 () -> System.out.println("No string containing 'abc' found.")
         );
     }
-
+    // Filter
+    // Map
+    // flatmap
+    // reduce
     public static void findLongestStringWithOptional() {
         System.out.println("---------------------------");
         System.out.println("59. Find the longest string using `Optional`.");
 
         List<String> words = List.of("apple", "banana", "strawberry", "kiwi");
-
         Optional<String> longest = words.stream()
                 .reduce((s1, s2) -> s1.length() >= s2.length() ? s1 : s2);
 
@@ -1158,26 +1158,50 @@ public class Main {
     public static void generateFirst10NaturalNumbers() {
         System.out.println("---------------------------");
         System.out.println("66. Generate first 10 natural numbers using `IntStream.range()`.");
+
+        int[] naturalNum = IntStream.rangeClosed(1,10).toArray();
+        System.out.println(Arrays.toString(naturalNum));
     }
 
     public static void squareNumbersInIntStream() {
         System.out.println("---------------------------");
         System.out.println("67. Square numbers in an `IntStream`.");
+        int[] naturalNum = IntStream.rangeClosed(1,10)
+                        .map(n -> n*n).toArray();
+        System.out.println(Arrays.toString(naturalNum));
     }
 
     public static void sumOfSquaresInIntStream() {
         System.out.println("---------------------------");
         System.out.println("68. Compute sum of squares of numbers in `IntStream`.");
+        int naturalNum = IntStream.rangeClosed(1,10)
+                .map(n -> n*n).sum();
+        System.out.println(naturalNum);
     }
 
     public static void countNumbersDivisibleBy5() {
         System.out.println("---------------------------");
         System.out.println("69. Count numbers divisible by 5 in `IntStream`.");
+
+        int [] num = {1,5,15,10,8,25,50,10};
+
+        Arrays.stream(num)
+                .filter(n -> n % 5 == 0)
+                .forEach(System.out::println);
+
     }
 
     public static void findFirstNumberGreaterThan50() {
         System.out.println("---------------------------");
         System.out.println("70. Find first number greater than 50 in `IntStream`.");
+        int [] num = {1,5,15,10,8,25,50,10};
+
+       OptionalInt someInt =  Arrays.stream(num)
+                .filter(n -> n >= 50)
+                .findFirst();
+       if (someInt.isPresent()) {
+           System.out.println(someInt.getAsInt());
+        }
     }
 
     public static void collectListToSet() {
