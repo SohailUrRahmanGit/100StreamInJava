@@ -1303,51 +1303,134 @@ public class Main {
     public static void sumNumbersParallel() {
         System.out.println("---------------------------");
         System.out.println("81. Sum numbers from 1 to 1_000_000 using parallel Stream.");
+        long sum = IntStream
+                .rangeClosed(1, 1_000_000)
+                .parallel()
+                .sum();
+
+        System.out.println("Sum: " + sum);
     }
 
     public static void countEvenNumbersParallel() {
         System.out.println("---------------------------");
         System.out.println("82. Count all even numbers in a large list using parallel Stream.");
+       List<Integer> even =  IntStream
+                .rangeClosed(1, 50)
+                .parallel()
+                .filter(n -> n %2 == 0)
+                 .boxed().toList();
+        System.out.println(even);
     }
 
     public static void filterStringsStartingWithAParallel() {
         System.out.println("---------------------------");
         System.out.println("83. Filter and collect all strings starting with \"A\" in parallel.");
+        List<String> words = List.of(
+                "Apple", "Banana", "Avocado",
+                "Kiwi", "Apricot", "Mango"
+        );
+        List<String> letters = words.parallelStream().filter( n -> n.startsWith("A")).toList();
+        System.out.println(letters);
     }
 
     public static void findMaxValueParallel() {
         System.out.println("---------------------------");
         System.out.println("84. Find max value in an `int` array using parallel Stream.");
+        OptionalInt even =  IntStream
+                .rangeClosed(1, 50)
+                .parallel()
+                .max();
+        System.out.println(even);
     }
 
     public static void convertObjectsToNamesParallel() {
         System.out.println("---------------------------");
         System.out.println("85. Convert a `List` of objects to `List` of names using parallel Stream.");
+        List<Employee> e = List.of(
+                new Employee("Alice", "HR"),
+                new Employee("Bob", "IT"),
+                new Employee("Charlie", "HR"));
+
+       Map<String, List<Employee>> result = e.parallelStream()
+               .collect(Collectors.groupingBy(n -> n.getName()));
+
+        System.out.println(result);
     }
 
     public static void countWordsLongerThan5Parallel() {
         System.out.println("---------------------------");
         System.out.println("86. Count words longer than 5 letters in parallel.");
+
+        List<String> words = List.of(
+                "apple", "banana", "strawberry",
+                "kiwi", "mango", "pineapple"
+        );
+
+        long count = words.parallelStream()
+                .filter(w -> w.length() > 5)
+                .count();
+
+        System.out.println("Count: " + count);
     }
 
     public static void findDistinctElementsParallel() {
         System.out.println("---------------------------");
         System.out.println("87. Find all distinct elements in parallel Stream.");
+
+        List<Integer> numbers = List.of(1,2,3,2,4,5,3,6,1,7);
+
+        List<Integer> distinct = numbers.parallelStream()
+                .distinct()
+                .collect(Collectors.toList());
+
+        System.out.println(distinct);
     }
 
     public static void flattenListsParallel() {
         System.out.println("---------------------------");
-        System.out.println("88. Flatten a `List<List<T>>` in parallel Stream.");
+        System.out.println("88. Flatten a List<List<T>> in parallel Stream.");
+
+        List<List<Integer>> listOfLists = List.of(
+                List.of(1, 2),
+                List.of(3, 4),
+                List.of(5, 6)
+        );
+
+        List<Integer> flatList = listOfLists.parallelStream()
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+
+        System.out.println(flatList);
     }
 
     public static void groupElementsByPropertyParallel() {
         System.out.println("---------------------------");
         System.out.println("89. Group elements by a property using parallel Stream.");
+
+        List<String> words = List.of(
+                "apple", "banana", "kiwi",
+                "mango", "pear", "grape"
+        );
+
+        Map<Integer, List<String>> grouped =
+                words.parallelStream()
+                        .collect(Collectors.groupingBy(String::length));
+
+        System.out.println(grouped);
     }
 
     public static void sumSquaresParallel() {
         System.out.println("---------------------------");
         System.out.println("90. Sum squares of numbers in parallel.");
+
+        List<Integer> numbers = List.of(1,2,3,4,5);
+
+        int sum = numbers.parallelStream()
+                .map(n -> n * n)
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        System.out.println("Sum of squares: " + sum);
     }
 
     public static void findTop3MostFrequentWords() {
