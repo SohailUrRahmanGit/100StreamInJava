@@ -1207,41 +1207,78 @@ public class Main {
     public static void collectListToSet() {
         System.out.println("---------------------------");
         System.out.println("71. Collect `List` elements to a `Set`.");
+        List<String> someString = List.of("Rahman","Gowher","sohail", "athiya", "suriya", "nayera","sohail");
+        Set<String> someSet = someString.stream().collect(toSet());
+        System.out.println(someSet);
     }
 
     public static void joinListWithComma() {
         System.out.println("---------------------------");
         System.out.println("72. Join a `List<String>` with comma using `Collectors.joining()`.");
+
+        List<String> listOfStr =  List.of("Sohail","Ur", "Rahman");
+        String some = listOfStr.stream()
+                .collect(Collectors.joining(""));
+        System.out.println(some);
     }
 
     public static void partitionIntoEvenAndOdd() {
         System.out.println("---------------------------");
         System.out.println("73. Partition a list of integers into even and odd numbers.");
+        List<Integer> integ = List.of(10,2,3,33,43,55,65,4,3,13,4,55);
+
+        Map<Boolean, List<Integer>> results =  integ.stream().collect(Collectors.partitioningBy(n -> n %2 == 0));
+        System.out.println(results.get(true));
+        System.out.println(results.get(false));
     }
 
     public static void groupStringsByLength() {
         System.out.println("---------------------------");
         System.out.println("74. Group a list of strings by their length.");
+
+        List<String> words = List.of("apple", "banana", "strawberry", "kiwi");
+
+       Map<Integer,List<String>> result = words.stream().collect(Collectors.groupingBy(String::length));
+        System.out.println(result);
     }
 
     public static void countStringFrequency() {
         System.out.println("---------------------------");
         System.out.println("75. Count frequency of each string in a `List`.");
+        List<String> words = List.of("apple", "banana", "strawberry", "kiwi", "banana", "strawberry", "kiwi");
+        Map<String,Long> result = words.stream().collect(Collectors.groupingBy(n -> n, counting()));
+        System.out.println(result);
     }
 
     public static void sumIntegersUsingCollectors() {
         System.out.println("---------------------------");
         System.out.println("76. Sum of all integers in a `List` using `Collectors.summingInt()`.");
+        List<Integer> integ = List.of(10,2,3,33,43,55,65,4,3,13,4,55);
+
+        int sum = integ.stream().collect(Collectors.summingInt(n -> n));
+        System.out.println("Sum: " + sum);
+
     }
 
     public static void averageIntegersUsingCollectors() {
         System.out.println("---------------------------");
         System.out.println("77. Average of all integers using `Collectors.averagingInt()`.");
+        List<Integer> integ = List.of(10,2,3,33,43,55,65,4,3,13,4,55);
+
+        double sum = integ.stream().collect(Collectors.averagingInt(n -> n));
+        System.out.println("Sum: " + sum);
     }
 
     public static void findMaxUsingCollectors() {
         System.out.println("---------------------------");
         System.out.println("78. Find max integer using `Collectors.maxBy()`.");
+        List<Integer> integ = List.of(10,2,3,33,43,55,65,4,3,13,4,55);
+
+        Optional<Integer> max =
+                integ.stream()
+                        .collect(Collectors.maxBy(Integer::compareTo));
+
+        System.out.println("Max: " + max.orElse(null));
     }
 
     public static void findMinUsingCollectors() {
@@ -1252,6 +1289,15 @@ public class Main {
     public static void convertToUppercaseAndCollect() {
         System.out.println("---------------------------");
         System.out.println("80. Convert a list of strings to uppercase and collect to a `List`.");
+
+        List<String> words = List.of("apple", "banana", "kiwi");
+
+            List<String> result = words.stream()
+                    .map(String::toUpperCase)
+                    .collect(Collectors.toList());
+
+            System.out.println(result);
+
     }
 
     public static void sumNumbersParallel() {
