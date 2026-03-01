@@ -1436,51 +1436,195 @@ public class Main {
     public static void findTop3MostFrequentWords() {
         System.out.println("---------------------------");
         System.out.println("91. Find the top 3 most frequent words in a `List`.");
+
+        List<String> words = List.of(
+                "apple", "banana", "kiwi","kiwi","pear",
+                "mango", "pear", "grape","apple"
+        );
+
+        words.stream()
+                .collect(Collectors.groupingBy(n -> n,counting()))
+               .entrySet()
+               .stream()
+               // Step 3: Sort by frequency (descending)
+               .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+               // Step 4: Take top 3
+               .limit(3)
+               // Step 5: Print result
+               .forEach(entry ->
+                       System.out.println(entry.getKey() + " -> " + entry.getValue())
+               );
     }
 
-    public static void findAllPrimeNumbers() {
+    private static boolean isPrime(int n) {
+        if (n <= 1) return false;
+
+        return IntStream.rangeClosed(2, (int) Math.sqrt(n))
+                .noneMatch(i -> n % i == 0);
+    }
+
+    public static void findPrimeNumbers() {
         System.out.println("---------------------------");
         System.out.println("92. Find all prime numbers in a `List` using Streams.");
+
+        List<Integer> numbers = List.of(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15);
+
+        List<Integer> primes = numbers.stream()
+                .filter(Main::isPrime)   // replace with actual class name
+                .collect(Collectors.toList());
+
+        System.out.println("Prime Numbers: " + primes);
     }
 
     public static void findAllPalindromes() {
         System.out.println("---------------------------");
         System.out.println("93. Find all palindromes in a `List<String>`.");
+
+        List<String> words = List.of(
+                "madam", "racecar", "apple",
+                "level", "banana", "civic"
+        );
+
+        List<String> palindromes = words.stream()
+                .filter(word -> word.equals(
+                        new StringBuilder(word).reverse().toString()
+                ))
+                .collect(Collectors.toList());
+
+        System.out.println("Palindromes: " + palindromes);
     }
 
     public static void mergeTwoListsRemoveDuplicates() {
         System.out.println("---------------------------");
         System.out.println("94. Merge two `List`s and remove duplicates using Streams.");
+
+        List<Integer> list1 = List.of(1, 2, 3, 4);
+        List<Integer> list2 = List.of(3, 4, 5, 6);
+
+        List<Integer> merged = Stream.concat(list1.stream(), list2.stream())
+                .distinct()
+                .collect(Collectors.toList());
+
+        System.out.println("Merged List: " + merged);
     }
 
     public static void sortMapByValuesDescending() {
         System.out.println("---------------------------");
         System.out.println("95. Sort a `Map` by values in descending order.");
+
+        Map<String, Integer> map = Map.of(
+                "Apple", 10,
+                "Banana", 5,
+                "Mango", 20
+        );
+
+        Map<String, Integer> sorted = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+
+        System.out.println("Sorted Map: " + sorted);
     }
 
     public static void findStringsWithAtLeast2Vowels() {
         System.out.println("---------------------------");
         System.out.println("96. Find all strings containing at least 2 vowels.");
+
+        List<String> words = List.of("apple", "sky", "orange", "try", "idea");
+
+        List<String> result = words.stream()
+                .filter(word -> word.toLowerCase()
+                        .chars()
+                        .filter(ch -> "aeiou".indexOf(ch) != -1)
+                        .count() >= 2)
+                .collect(Collectors.toList());
+
+        System.out.println("Result: " + result);
     }
 
     public static void countDistinctCharactersAcrossStrings() {
         System.out.println("---------------------------");
-        System.out.println("97. Count distinct characters across all strings in a `List`.");
+        System.out.println("97. Count distinct characters across all strings.");
+
+        List<String> words = List.of("apple", "banana", "grape");
+
+        long count = words.stream()
+                .flatMap(word -> word.chars().mapToObj(c -> (char) c))
+                .distinct()
+                .count();
+
+        System.out.println("Distinct Character Count: " + count);
+    }
+
+    static class Employee {
+        String name;
+        String department;
+        double salary;
+
+        public Employee(String name, String department, double salary) {
+            this.name = name;
+            this.department = department;
+            this.salary = salary;
+        }
+
+        public String getDepartment() { return department; }
+        public double getSalary() { return salary; }
     }
 
     public static void groupEmployeesByDepartment() {
         System.out.println("---------------------------");
         System.out.println("98. Group employees by department and find average salary.");
+
+        List<Employee> employees = List.of(
+                new Employee("John", "IT", 50000),
+                new Employee("Sara", "IT", 60000),
+                new Employee("Mike", "HR", 40000)
+        );
+
+        Map<String, Double> avgSalary = employees.stream()
+                .collect(Collectors.groupingBy(
+                        Employee::getDepartment,
+                        Collectors.averagingDouble(Employee::getSalary)
+                ));
+
+        System.out.println("Average Salary by Dept: " + avgSalary);
     }
 
     public static void partitionIntoPrimeAndNonPrime() {
         System.out.println("---------------------------");
         System.out.println("99. Partition numbers into prime and non-prime.");
+
+        List<Integer> numbers = List.of(2, 3, 4, 5, 6, 7, 8, 9);
+
+        Map<Boolean, List<Integer>> result = numbers.stream()
+                .collect(Collectors.partitioningBy(Main::isPrime));
+
+        System.out.println("Prime: " + result.get(true));
+        System.out.println("Non-Prime: " + result.get(false));
     }
 
     public static void findPairsSumToTarget() {
         System.out.println("---------------------------");
-        System.out.println("100. Find all pairs in a `List` that sum to a target value.");
+        System.out.println("100. Find all pairs in a `List` that sum to target.");
+
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6);
+        int target = 7;
+
+        List<String> pairs = IntStream.range(0, numbers.size())
+                .boxed()
+                .flatMap(i ->
+                        IntStream.range(i + 1, numbers.size())
+                                .filter(j -> numbers.get(i) + numbers.get(j) == target)
+                                .mapToObj(j -> numbers.get(i) + " + " + numbers.get(j))
+                )
+                .collect(Collectors.toList());
+
+        System.out.println("Pairs: " + pairs);
     }
 
 }
