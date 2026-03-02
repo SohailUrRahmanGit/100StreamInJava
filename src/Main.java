@@ -577,7 +577,6 @@ public class Main {
             System.out.println("No repeated characters found.");
         }
         System.out.println("---------------------------");
-
     }
 
     public static void findFirstNonRepeatedCharacter() {
@@ -670,8 +669,7 @@ public class Main {
                     .map(String::toUpperCase)
                     .collect(Collectors.joining(" "));
 
-            System.out.println(result);
-
+        System.out.println(result);
     }
 
     public static void removeDuplicateCharacters() {
@@ -1626,5 +1624,21 @@ public class Main {
 
         System.out.println("Pairs: " + pairs);
     }
+
+    public  static void printEvenString() {
+        String s = "Shaiksohailurrahman";
+        IntStream.range(0, s.length())
+                .mapToObj(n -> {
+                    char ch = s.charAt(n);
+                    if (n %2 == 0) {
+                        return String.valueOf(Character.toUpperCase(ch));
+                    }else {
+                        return String.valueOf(ch);
+                    }
+                }).collect(Collectors.joining());
+
+    }
+
+
 
 }
